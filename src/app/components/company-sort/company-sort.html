@@ -1,0 +1,18 @@
+<div class="company-sort">
+    <p class="company-sort__p">Сортировка по:</p>
+    <button 
+        [class]="getButtonClass('name')" 
+        (click)="sortBy('name')">
+        названию
+    </button>
+    <button 
+        [class]="getButtonClass('type')" 
+        (click)="sortBy('type')">
+        типу
+    </button>
+    <button 
+        [class]="getButtonClass('industry')" 
+        (click)="sortBy('industry')">
+        виду деятельности
+    </button>
+</div>

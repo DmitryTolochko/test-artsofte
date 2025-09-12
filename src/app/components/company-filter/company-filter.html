@@ -1,0 +1,22 @@
+<form class="company-filter" [formGroup]="filters">
+    <input class="company-filter__input" placeholder="Поиск по названию" 
+        formControlName="business_name"/>
+
+    <div class="company-filter__select-wrapper" >
+        <select id="type" class="company-filter__select" formControlName="type">
+            <option value="">Тип</option>
+            @for (option of types; track $index) {
+                <option [value]="option" >{{ option }}</option>
+            }
+        </select>
+    </div>
+
+    <div class="company-filter__select-wrapper" >
+        <select id="industry" class="company-filter__select" formControlName="industry">
+            <option value="">Вид деятельности</option>
+            @for (option of industries; track $index) {
+                <option [value]="option" >{{ option }}</option>
+            }
+        </select>
+    </div>
+</form>

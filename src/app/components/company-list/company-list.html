@@ -1,0 +1,26 @@
+<ul class="company-list">
+    <app-company-filter (filterChange)="onFilterChange($event)"></app-company-filter>
+    <app-company-sort (sortChange)="onSortChange($event)"></app-company-sort>
+    @for (companyInfo of filteredList; track companyInfo.id) {
+        <app-company-item [companyInfo]="companyInfo"></app-company-item>
+    } @empty {
+        @if (isDataLoaded) {
+            <li class="company-list__empty">Ничего не найдено</li>
+        } @else {
+            <app-loader></app-loader>
+        }
+    }
+    <div class="company-list__buttons">
+        @if (currentPage !== 1) {
+            <button class="company-list__button company-list__button_prev" (click)="changePage(-1)">
+                <img alt="prev_page" src="../../../assets/arrow.svg"/>
+            </button>
+        }
+        <p>{{ currentPage }}</p>
+        @if (filteredList.length === 15) {
+            <button class="company-list__button" (click)="changePage(1)">
+                <img alt="next_page" src="../../../assets/arrow.svg"/>
+            </button>
+        }
+    </div>
+</ul>

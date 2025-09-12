@@ -1,0 +1,42 @@
+.company-list {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.company-list__buttons {
+    display: flex;
+    gap: 20px;
+
+    justify-content: center;
+    padding-bottom: 40px;
+    align-items: center;
+}
+
+.company-list__button {
+    all: unset;
+    background-color: #A7ED6F;
+    border-radius: 100px;
+    padding: 16px;
+    display: flex;
+
+    &:hover {
+        background-color: #c8f7a2;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+}
+
+.company-list__empty {
+    all: unset;
+    display: flex;
+    justify-content: center;
+}
+
+.company-list__button_prev {
+    transform: rotate(180deg);
+}

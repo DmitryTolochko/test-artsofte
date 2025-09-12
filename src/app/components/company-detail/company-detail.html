@@ -1,0 +1,27 @@
+<div class="company-detail">
+    <a class="company-detail__back" [routerLink]="['/list']">
+        <img alt="arrow back" src="../../../assets/arrow_grey.svg" draggable="false"/>
+        Назад
+    </a>
+    @if (isDataLoaded) {
+        <div class="company-detail__data">
+            <img class="company-detail__logo" alt="logo" [src]="companyInfo.logo"  crossorigin draggable="false"/>
+            <div class="company-detail__info">
+                <h1 class="company-detail__name">{{ companyInfo.suffix + ' ' + companyInfo.business_name }}</h1>
+                <q class="company-detail__catch-phrase">{{ companyInfo.catch_phrase }}</q>
+                <p class="company-detail__bubble">{{ companyInfo.industry }}</p>
+                <p class="company-detail__bubble">{{ companyInfo.type }}</p>
+                <div class="company-detail__contact">
+                    <img alt="phone" src="../../../assets/phone.svg" draggable="false"/>
+                    <span>{{ companyInfo.phone_number }}</span>
+                </div>
+                <div class="company-detail__contact">
+                    <img alt="address" src="../../../assets/globe.svg" draggable="false"/>
+                    <span>{{ companyInfo.full_address }}</span>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <app-loader></app-loader>
+    }
+</div>

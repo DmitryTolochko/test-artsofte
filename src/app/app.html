@@ -1,0 +1,19 @@
+<main class="layout">
+    <header class="layout__header-wrapper">
+        <div class="layout__header">
+            <div>
+                <span class="layout__header-h layout__header-h_green">Компании</span>
+                <span class="layout__header-h">.ру</span>
+            </div>
+            <div class="layout__header-nav">
+                <a class="layout__nav-link" [routerLink]="['/list']" 
+                    routerLinkActive="active">Список</a>
+                <a class="layout__nav-link" [routerLink]="['/map']" 
+                    routerLinkActive="active">Показать на карте</a>
+            </div>
+        </div>
+    </header>
+    <section class="layout__content">
+        <router-outlet></router-outlet>
+    </section>
+</main>
