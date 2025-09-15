@@ -27,8 +27,11 @@ export class CompanyFilter {
 
   constructor () {
     this.dictService.getAllIndustries()
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((result: string[]) => this.industries = result);
+    
     this.dictService.getAllTypes()
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((result: string[]) => this.types = result);
   }
 

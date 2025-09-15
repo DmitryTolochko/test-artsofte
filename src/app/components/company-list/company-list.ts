@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { CompanyInfo } from '../../interfaces/company-info';
 import { CompanyItem } from '../company-item/company-item';
 import { CompaniesService } from '../../services/companies';
@@ -8,6 +8,7 @@ import { CompanySort } from '../company-sort/company-sort';
 import { SortConfig } from '../../interfaces/sort-config';
 import { Loader } from '../loader/loader';
 import { CompaniesDTO } from '../../interfaces/companies-dto';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-company-list',
@@ -24,6 +25,7 @@ export class CompanyList {
   hasNextPage: boolean = true;
 
   compService: CompaniesService = inject(CompaniesService);
+  destroyRef = inject(DestroyRef);
 
   constructor() {
     this.getList(this.sortConfig, this.filters);
@@ -60,6 +62,7 @@ export class CompanyList {
 
   getList (sortConfig: SortConfig | undefined, filters: FormGroup | undefined) {
     this.compService.getAllCompaniesInfo(sortConfig, filters, this.currentPage)
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: (response: CompaniesDTO) => {
         this.filteredList = response.data || [];

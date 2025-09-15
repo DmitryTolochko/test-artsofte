@@ -1,8 +1,9 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, DestroyRef, inject, input } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CompanyInfo } from '../../interfaces/company-info';
 import { CompaniesService } from '../../services/companies';
 import { Loader } from '../loader/loader';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-company-detail',
@@ -11,6 +12,8 @@ import { Loader } from '../loader/loader';
   styleUrl: './company-detail.scss'
 })
 export class CompanyDetail {
+  private destroyRef = inject(DestroyRef);
+
   isDataLoaded: boolean = false;
 
   id: number | undefined;
@@ -36,6 +39,7 @@ export class CompanyDetail {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.compService.getCompanyDetails(this.id)
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((companyInfo: CompanyInfo) => {
       this.companyInfo = companyInfo;
       this.isDataLoaded = true;
