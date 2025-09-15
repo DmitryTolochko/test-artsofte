@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { CompanyInfo } from '../../interfaces/company-list-interface';
+import { CompanyInfo } from '../../interfaces/company-info';
 import { RouterModule } from '@angular/router';
 
 @Component({

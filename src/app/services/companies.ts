@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
-import { CompanyInfo } from '../interfaces/company-list-interface';
-import axios from 'axios';
+import { CompanyInfo } from '../interfaces/company-info';
 import { SortConfig } from '../interfaces/sort-config';
 import { FormControl, FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { CompaniesDTO } from '../interfaces/companies-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompaniesService {
-  url = `https://faker-api.milki.space`;
+  private url = `https://faker-api.milki.space`;
 
-  async getAllCompaniesInfo(
+  constructor(private http: HttpClient) { }
+
+  getAllCompaniesInfo(
     sortConfig: SortConfig = {
       field: 'id',
       direction: 'asc'
@@ -21,7 +25,7 @@ export class CompaniesService {
       "industry": new FormControl("")
     }),
     currentPage: number = 1
-  ): Promise<CompanyInfo[]> {
+  ): Observable<CompaniesDTO> {
     let query = this.url + `/companies?page=${currentPage}&per_page=15`;
     if (filters.value["industry"] !== "") {
       query += `&industry=${filters.value["industry"]}`;
@@ -35,12 +39,10 @@ export class CompaniesService {
 
     query += `&sort_by=${sortConfig.field}&sort_order=${sortConfig.direction}`;
 
-    const response = await axios.get(query);
-    return response.data.data ?? [];
+    return this.http.get<CompaniesDTO>(query);
   }
 
-  async getCompanyDetails(id: number): Promise<CompanyInfo> {
-    const response = await axios.get(this.url + `/companies/${id}`);
-    return response.data;
+  getCompanyDetails(id: number): Observable<CompanyInfo> {
+    return this.http.get<CompanyInfo>(this.url + `/companies/${id}`);
   }
 }

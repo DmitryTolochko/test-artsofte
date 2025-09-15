@@ -1,21 +1,20 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DictionariesService {
-  url = `https://faker-api.milki.space`;
+  private url = `https://faker-api.milki.space`;
 
-  async getAllIndustries(): Promise<string[]> {
-    const response = await axios.get(this.url + `/industries`);
+  constructor(private http: HttpClient) { }
 
-    return response.data ?? [];
+  getAllIndustries(): Observable<string[]> {
+    return this.http.get<string[]>(this.url + `/industries`);
   }
 
-  async getAllTypes(): Promise<string[]> {
-    const response = await axios.get(this.url + `/types`);
-
-    return response.data ?? [];
+  getAllTypes(): Observable<string[]> {
+    return this.http.get<string[]>(this.url + `/types`);
   }
 }

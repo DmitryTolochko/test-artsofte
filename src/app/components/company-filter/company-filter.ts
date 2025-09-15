@@ -1,7 +1,8 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DictionariesService } from '../../services/dictionaries';
 import { debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-company-filter',
@@ -13,6 +14,7 @@ export class CompanyFilter {
   @Output() filterChange = new EventEmitter<FormGroup>();
 
   dictService: DictionariesService = inject(DictionariesService);
+  private destroyRef = inject(DestroyRef);
 
   types: string[] = [];
   industries: string[] = [];
@@ -24,13 +26,18 @@ export class CompanyFilter {
   })
 
   constructor () {
-    this.dictService.getAllIndustries().then((result: string[]) => this.industries = result);
-    this.dictService.getAllTypes().then((result: string[]) => this.types = result);
+    this.dictService.getAllIndustries()
+    .subscribe((result: string[]) => this.industries = result);
+    this.dictService.getAllTypes()
+    .subscribe((result: string[]) => this.types = result);
   }
 
   ngOnInit() {
     this.filters.valueChanges
-    .pipe(debounceTime(300))
+    .pipe(
+      debounceTime(300),
+      takeUntilDestroyed(this.destroyRef)
+    )
     .subscribe(() => {
       this.filterChange.emit(this.filters);
     });

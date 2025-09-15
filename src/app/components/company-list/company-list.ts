@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CompanyInfo } from '../../interfaces/company-list-interface';
+import { CompanyInfo } from '../../interfaces/company-info';
 import { CompanyItem } from '../company-item/company-item';
 import { CompaniesService } from '../../services/companies';
 import { FormGroup, FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { CompanyFilter } from '../company-filter/company-filter';
 import { CompanySort } from '../company-sort/company-sort';
 import { SortConfig } from '../../interfaces/sort-config';
 import { Loader } from '../loader/loader';
+import { CompaniesDTO } from '../../interfaces/companies-dto';
 
 @Component({
   selector: 'app-company-list',
@@ -20,6 +21,7 @@ export class CompanyList {
   filters: FormGroup | undefined;
   currentPage: number = 1;
   isDataLoaded: boolean = false;
+  hasNextPage: boolean = true;
 
   compService: CompaniesService = inject(CompaniesService);
 
@@ -57,9 +59,19 @@ export class CompanyList {
   }
 
   getList (sortConfig: SortConfig | undefined, filters: FormGroup | undefined) {
-    this.compService.getAllCompaniesInfo(sortConfig, filters, this.currentPage).then((compList: CompanyInfo[]) => {
-      this.filteredList = compList;
-      this.isDataLoaded = true;
-    })
+    this.compService.getAllCompaniesInfo(sortConfig, filters, this.currentPage)
+    .subscribe({
+      next: (response: CompaniesDTO) => {
+        this.filteredList = response.data || [];
+        this.isDataLoaded = true;
+        this.hasNextPage = response.has_next;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.filteredList = [];
+        this.isDataLoaded = true;
+        this.hasNextPage = false;
+      }
+    });
   }
 }

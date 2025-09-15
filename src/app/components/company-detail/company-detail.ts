@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CompanyInfo } from '../../interfaces/company-list-interface';
+import { CompanyInfo } from '../../interfaces/company-info';
 import { CompaniesService } from '../../services/companies';
 import { Loader } from '../loader/loader';
 
@@ -35,7 +35,8 @@ export class CompanyDetail {
   ngOnInit() {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.compService.getCompanyDetails(this.id).then((companyInfo: CompanyInfo) => {
+    this.compService.getCompanyDetails(this.id)
+    .subscribe((companyInfo: CompanyInfo) => {
       this.companyInfo = companyInfo;
       this.isDataLoaded = true;
     })

@@ -1,3 +1,9 @@
+.company-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
 .company-list {
     margin: 0;
     width: 100%;
@@ -39,4 +45,8 @@
 
 .company-list__button_prev {
     transform: rotate(180deg);
+}
+
+.company-list__element {
+    display: inline;
 }

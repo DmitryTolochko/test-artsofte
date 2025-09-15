@@ -1,15 +1,26 @@
-<ul class="company-list">
+<div class="company-list-wrapper">
     <app-company-filter (filterChange)="onFilterChange($event)"></app-company-filter>
     <app-company-sort (sortChange)="onSortChange($event)"></app-company-sort>
-    @for (companyInfo of filteredList; track companyInfo.id) {
-        <app-company-item [companyInfo]="companyInfo"></app-company-item>
-    } @empty {
-        @if (isDataLoaded) {
-            <li class="company-list__empty">Ничего не найдено</li>
-        } @else {
-            <app-loader></app-loader>
+
+    <ul class="company-list">
+        
+        @for (companyInfo of filteredList; track companyInfo.id) {
+            <li class="company-list__element">
+                <app-company-item [companyInfo]="companyInfo"></app-company-item>
+            </li>
+            
+        } @empty {
+            @if (isDataLoaded) {
+                <li class="company-list__empty">Ничего не найдено</li>
+            } @else {
+                <li class="company-list__element">
+                    <app-loader></app-loader>
+                </li>
+            }
         }
-    }
+        
+    </ul>
+
     <div class="company-list__buttons">
         @if (currentPage !== 1) {
             <button class="company-list__button company-list__button_prev" (click)="changePage(-1)">
@@ -17,10 +28,11 @@
             </button>
         }
         <p>{{ currentPage }}</p>
-        @if (filteredList.length === 15) {
+        @if (hasNextPage) {
             <button class="company-list__button" (click)="changePage(1)">
                 <img alt="next_page" src="../../../assets/arrow.svg"/>
             </button>
         }
     </div>
-</ul>
+</div>
+
